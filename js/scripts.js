@@ -18,11 +18,6 @@ var unvisited = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0]
-    // [1, 1, 1, 1, 1],
-    // [1, 1, 1, 1, 1],
-    // [1, 1, 1, 1, 1],
-    // [1, 1, 1, 1, 1],
-    // [1, 1, 1, 1, 1]
 ];
 var unvisitedOddCount = 13;
 var unvisitedEvenCount = 12;
@@ -30,9 +25,6 @@ var visitedColors = "";
 var indexOfVisitedSquares = [];
 
 function initApp() {
-    // document.getElementById("odd-counter").innerHTML = unvisitedOddCount;
-    // document.getElementById("even-counter").innerHTML = unvisitedEvenCount;
-
     ctx = document.getElementById('demo-canvas').getContext("2d");
     canvas = document.querySelector("#demo-canvas");
 
@@ -56,11 +48,6 @@ function initApp() {
     canvas.addEventListener("mouseleave", (e) => {
         mousePressed = false;
     });
-
-    // var square0_0 = document.getElementById("square0-0");
-    // square0_0.addEventListener("mouseover", (e) => {
-    //     console.log("Mouse over " + square0_0.id);
-    // });
 
 }
 
@@ -90,19 +77,11 @@ function getElementFromCoordinates(x, y) {
     return currentElement;
 }
 
-// function checkIfEnteredDiv() {
-//     var square0_0 = document.getElementById("square0-0");
-//     console.log(square0_0.id + ", zIndex of canvas = " + canvas.style.zIndex);
-//     square0_0.onmouseenter = function () {
-//         console.log("mouse entered");
-//     }
-// }
-
 function Draw(x, y, isDown) {
     if (isDown) {
         ctx.beginPath();
-        ctx.strokeStyle = "red";//$('#selColor').val();
-        ctx.lineWidth = 36;//$('#selWidth').val();
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 36;
         ctx.lineJoin = "round";
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(x, y);
@@ -110,33 +89,15 @@ function Draw(x, y, isDown) {
         ctx.stroke();
 
         var element = getElementFromCoordinates(x, y + 110);
-        // var position = element.getBoundingClientRect();
-        // console.log(x + ", " + y);
-        // console.log("width = " + position.left + ", height = " + position.top);
-        // console.log(element);
         var index = getIndexFromId(element.id);
-        // console.log(index[0] + "," + index[1]);
-        // console.log(index);
-        // element.parentNode.matches(":hover")
-        if (index != null && hasVisualizeToggled && unvisited[index[0]][index[1]] == 0 && checkIfNotDiagonal(index[0], index[1])) {
-        // if (hasVisualizeToggled) {
-            // var board = document.getElementById('board');
-            // board.style.zIndex = 2;
-            // canvas.style.zIndex = 1;
-            // console.log("Checking if mouse entered");
-            // checkIfEnteredDiv();
-            // board.style.zIndex = 1;
-            // canvas.style.zIndex = 2;
-            // console.log(index);
-            // console.log(element);
-            console.log(index[0] + "," + index[1]);
+        if (index != null && hasVisualizeToggled && 
+                unvisited[index[0]][index[1]] == 0 && 
+                checkIfNotDiagonal(index[0], index[1])) {
+
             if (index != null) {
                 unvisited[index[0]][index[1]] = 1;
-                // console.log(unvisited);
                 updateVisitedColors(index[0], index[1]);
-                // updateIndexOfVisitedSquares(index[0], index[1]);
             }
-            // console.log(unvisited);
 
             countUnvisitedOddSquares();
             countUnvisitedEvenSquares();
@@ -149,8 +110,6 @@ function Draw(x, y, isDown) {
 }
 
 function areIndexEqual(a, b) {
-    // console.log("a = " + a);
-    // console.log("b = " + b);
     var len = a.length;
     var i;
     for (i = 0; i < len; i++) {
@@ -163,27 +122,17 @@ function areIndexEqual(a, b) {
 }
 
 function checkIfNotDiagonal(i, j) {
-    // console.log("indexOfVisitedSquares are " + indexOfVisitedSquares);
-    // console.log("[i, j] is " + "[" + i + ", " + j + "]");
     if (!indexOfVisitedSquares.length) {
         indexOfVisitedSquares.push([i, j]);
-        // console.log("Visited indices are " + indexOfVisitedSquares);
         return true;
     }
 
     var lastIndex = indexOfVisitedSquares.length - 1;
-    // console.log("lastIndex = " + lastIndex);
     var prevIndex = indexOfVisitedSquares[lastIndex];
-    // console.log("previousIndex = " + prevIndex);
-
-    // if (previousIndex == undefined) {
-    //     return false;
-    // }
 
     // check top
     // [-][]
     if (areIndexEqual([subtractOne(prevIndex[0]), prevIndex[1]], [i, j])) {
-        // console.log("previousIndex = " + [subtractOne(prevIndex[0]), prevIndex[1]] + " is equal to [i-1,j] = " + [i,j]);
         indexOfVisitedSquares.push([i, j]);
         return true;
     }
@@ -191,7 +140,6 @@ function checkIfNotDiagonal(i, j) {
     // check right
     // [][+]
     if (areIndexEqual([prevIndex[0], addOne(prevIndex[1])], [i, j])) {
-        // console.log("previousIndex = " + [prevIndex[0], addOne(prevIndex[1])] + " is equal to [i-1,j] = " + [i,j]);
         indexOfVisitedSquares.push([i, j]);
         return true;
     }
@@ -229,7 +177,7 @@ function updateVisitedColors(i, j) {
     if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
         visitedColors += "<span style='color: rgb(12, 131, 22)'>G</span>";
     } else if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
-        visitedColors += "<span style='color: #a2a2a2'>W</span>"; //style='color: rgb(248, 248, 241)'
+        visitedColors += "<span style='color: #a2a2a2'>W</span>";
     }
 }
 
@@ -247,7 +195,6 @@ function countUnvisitedOddSquares() {
         }
     }
     unvisitedOddCount = 13 - count;
-    // console.log(unvisited);
 }
 
 function countUnvisitedEvenSquares() {
@@ -264,22 +211,18 @@ function countUnvisitedEvenSquares() {
         }
     }
     unvisitedEvenCount = 12 - count;
-    // console.log(unvisited);
 }
 
 function showVisitedColors() {
     document.getElementById("visited-colors").innerHTML = visitedColors;
-    // console.log(unvisitedOddCount);
 }
 
 function showOddCount() {
     document.getElementById("odd-counter").innerHTML = unvisitedOddCount;
-    // console.log(unvisitedOddCount);
 }
 
 function showEvenCount() {
     document.getElementById("even-counter").innerHTML = unvisitedEvenCount;
-    // console.log(unvisitedEvenCount);
 }
 
 function clearDrawing() {
