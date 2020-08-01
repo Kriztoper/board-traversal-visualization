@@ -118,7 +118,7 @@ function Draw(x, y, isDown) {
         // console.log(index[0] + "," + index[1]);
         // console.log(index);
         // element.parentNode.matches(":hover")
-        if (index != null && hasVisualizeToggled && unvisited[index[0]][index[1]] == 0) {// && checkIfNotDiagonal(index[0], index[1])) {
+        if (index != null && hasVisualizeToggled && unvisited[index[0]][index[1]] == 0 && checkIfNotDiagonal(index[0], index[1])) {
         // if (hasVisualizeToggled) {
             // var board = document.getElementById('board');
             // board.style.zIndex = 2;
@@ -134,7 +134,7 @@ function Draw(x, y, isDown) {
                 unvisited[index[0]][index[1]] = 1;
                 // console.log(unvisited);
                 updateVisitedColors(index[0], index[1]);
-                updateIndexOfVisitedSquares(index[0], index[1]);
+                // updateIndexOfVisitedSquares(index[0], index[1]);
             }
             // console.log(unvisited);
 
@@ -149,6 +149,8 @@ function Draw(x, y, isDown) {
 }
 
 function areIndexEqual(a, b) {
+    // console.log("a = " + a);
+    // console.log("b = " + b);
     var len = a.length;
     var i;
     for (i = 0; i < len; i++) {
@@ -161,14 +163,18 @@ function areIndexEqual(a, b) {
 }
 
 function checkIfNotDiagonal(i, j) {
+    // console.log("indexOfVisitedSquares are " + indexOfVisitedSquares);
+    // console.log("[i, j] is " + "[" + i + ", " + j + "]");
     if (!indexOfVisitedSquares.length) {
+        indexOfVisitedSquares.push([i, j]);
+        // console.log("Visited indices are " + indexOfVisitedSquares);
         return true;
     }
 
     var lastIndex = indexOfVisitedSquares.length - 1;
-    console.log("lastIndex = " + lastIndex);
-    var previousIndex = indexOfVisitedSquares[lastIndex];
-    console.log(previousIndex);
+    // console.log("lastIndex = " + lastIndex);
+    var prevIndex = indexOfVisitedSquares[lastIndex];
+    // console.log("previousIndex = " + prevIndex);
 
     // if (previousIndex == undefined) {
     //     return false;
@@ -176,29 +182,43 @@ function checkIfNotDiagonal(i, j) {
 
     // check top
     // [-][]
-    if (areIndexEqual(previousIndex, [i - 1, j])) {
+    if (areIndexEqual([subtractOne(prevIndex[0]), prevIndex[1]], [i, j])) {
+        // console.log("previousIndex = " + [subtractOne(prevIndex[0]), prevIndex[1]] + " is equal to [i-1,j] = " + [i,j]);
+        indexOfVisitedSquares.push([i, j]);
         return true;
     }
 
     // check right
     // [][+]
-    if (areIndexEqual(previousIndex, [i, j + 1])) {
+    if (areIndexEqual([prevIndex[0], addOne(prevIndex[1])], [i, j])) {
+        // console.log("previousIndex = " + [prevIndex[0], addOne(prevIndex[1])] + " is equal to [i-1,j] = " + [i,j]);
+        indexOfVisitedSquares.push([i, j]);
         return true;
     }
 
     // check left
     // []][-]
-    if (areIndexEqual(previousIndex, [i, j - 1])) {
+    if (areIndexEqual([prevIndex[0], subtractOne(prevIndex[1])], [i, j])) {
+        indexOfVisitedSquares.push([i, j]);
         return true;
     }
 
     // check down
     // [+][]
-    if (areIndexEqual(previousIndex, [i + 1, j])) {
+    if (areIndexEqual([addOne(prevIndex[0]), prevIndex[1]], [i, j])) {
+        indexOfVisitedSquares.push([i, j]);
         return true;
     }
 
     return false;
+}
+
+function addOne(value) {
+    return parseInt(value) + parseInt(1);
+}
+
+function subtractOne(value) {
+    return parseInt(value) - parseInt(1);
 }
 
 function updateIndexOfVisitedSquares(i, j) {
