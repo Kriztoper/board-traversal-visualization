@@ -20,8 +20,7 @@
         <button onclick="rotateCanvasToLeft()" style="margin-left: 20px;">Rotate Left</button>
         <button onclick="rotateCanvasToRight()" style="margin-left: 20px;">Rotate Right</button>
         <button onclick="clearColoredSquares()" style="margin-left: 20px;">Clear Colored Squares</button>
-        <span>Odd Count: <span id="odd-counter"></span></span>
-        <span>Even Count: <span id="even-counter"></span></span>
+        <button onclick="resetVisualization()" style="margin-left: 20px;">Reset Visualization</button>
         <label class="color-fill-switch" style="margin-left: 20px;">
             <input type="checkbox" onclick="toggleFillColor()">
             <span class="slider round">Fill w/ Green</span>
@@ -30,25 +29,30 @@
             <input type="checkbox" onclick="toggleVisualize()">
             <span class="slider round">Visualize</span>
         </label>
-        <div id="content" style="width: 600px; height: 600px;">
-            <canvas id="demo-canvas" width="505" height="520" style="position: absolute; z-index: 2;"></canvas>
+        <br/>
+        <span style="margin-left: 20px;"><span id="odd-counter-label"></span><h1 id="odd-counter" style="display: inline;"></h1></span>
+        <span style="margin-left: 20px;"><span id="even-counter-label"></span><h1 id="even-counter" style="display: inline;"></h1></span>
+        <br/>
+        <span style="margin-left: 20px;"><span id="visited-colors-label"></span><h1 id="visited-colors" style="display: inline;"></h1></span>
+        <div id="content" style="width: 1600px; height: 620px;">
+            <canvas id="demo-canvas" width="505" height="620" style="position: absolute; z-index: 2;"></canvas><!--margin-top: 50px;"></canvas>-->
             <div id="board" style="width: 505px; height: 520px;
-                    background: rgb(190, 190, 192); position:absolute;
-                    z-index: 1; display: block;">
+                    background: white; position: absolute;
+                    z-index: 1; display: block; margin-top: 50px;">
                 <div id="row0" style="display: flex;">
-                    <div id="square0-0" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black;">
+                    <div id="square0-0" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black; margin-top: 50px;">
 
                     </div>
-                    <div id="square0-1" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black;">
+                    <div id="square0-1" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black; margin-top: 50px;">
 
                     </div>
-                    <div id="square0-2" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black;">
+                    <div id="square0-2" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black; margin-top: 50px;">
 
                     </div>
-                    <div id="square0-3" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black;">
+                    <div id="square0-3" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black; margin-top: 50px;">
 
                     </div>
-                    <div id="square0-4" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black;">
+                    <div id="square0-4" onclick="changeColor(this)" style="width: 100px; height: 100px; background-color: rgb(248, 248, 241); border: 2px solid black; margin-top: 50px;">
 
                     </div>
                 </div>

@@ -26,10 +26,12 @@ var unvisited = [
 ];
 var unvisitedOddCount = 13;
 var unvisitedEvenCount = 12;
+var visitedColors = "";
+var indexOfVisitedSquares = [];
 
 function initApp() {
-    document.getElementById("odd-counter").innerHTML = unvisitedOddCount;
-    document.getElementById("even-counter").innerHTML = unvisitedEvenCount;
+    // document.getElementById("odd-counter").innerHTML = unvisitedOddCount;
+    // document.getElementById("even-counter").innerHTML = unvisitedEvenCount;
 
     ctx = document.getElementById('demo-canvas').getContext("2d");
     canvas = document.querySelector("#demo-canvas");
@@ -54,6 +56,12 @@ function initApp() {
     canvas.addEventListener("mouseleave", (e) => {
         mousePressed = false;
     });
+
+    // var square0_0 = document.getElementById("square0-0");
+    // square0_0.addEventListener("mouseover", (e) => {
+    //     console.log("Mouse over " + square0_0.id);
+    // });
+
 }
 
 function getOffset(element) {
@@ -82,6 +90,14 @@ function getElementFromCoordinates(x, y) {
     return currentElement;
 }
 
+// function checkIfEnteredDiv() {
+//     var square0_0 = document.getElementById("square0-0");
+//     console.log(square0_0.id + ", zIndex of canvas = " + canvas.style.zIndex);
+//     square0_0.onmouseenter = function () {
+//         console.log("mouse entered");
+//     }
+// }
+
 function Draw(x, y, isDown) {
     if (isDown) {
         ctx.beginPath();
@@ -93,14 +109,32 @@ function Draw(x, y, isDown) {
         ctx.closePath();
         ctx.stroke();
 
-        var element = getElementFromCoordinates(x, y);
+        var element = getElementFromCoordinates(x, y + 110);
+        // var position = element.getBoundingClientRect();
+        // console.log(x + ", " + y);
+        // console.log("width = " + position.left + ", height = " + position.top);
+        // console.log(element);
         var index = getIndexFromId(element.id);
-        if (hasVisualizeToggled && unvisited[index[0]][index[1]] == 0) {
+        // console.log(index[0] + "," + index[1]);
+        // console.log(index);
+        // element.parentNode.matches(":hover")
+        if (index != null && hasVisualizeToggled && unvisited[index[0]][index[1]] == 0) {// && checkIfNotDiagonal(index[0], index[1])) {
+        // if (hasVisualizeToggled) {
+            // var board = document.getElementById('board');
+            // board.style.zIndex = 2;
+            // canvas.style.zIndex = 1;
+            // console.log("Checking if mouse entered");
+            // checkIfEnteredDiv();
+            // board.style.zIndex = 1;
+            // canvas.style.zIndex = 2;
+            // console.log(index);
             // console.log(element);
-            console.log(index);
+            console.log(index[0] + "," + index[1]);
             if (index != null) {
                 unvisited[index[0]][index[1]] = 1;
-                console.log(unvisited);
+                // console.log(unvisited);
+                updateVisitedColors(index[0], index[1]);
+                updateIndexOfVisitedSquares(index[0], index[1]);
             }
             // console.log(unvisited);
 
@@ -108,39 +142,114 @@ function Draw(x, y, isDown) {
             countUnvisitedEvenSquares();
             showOddCount();
             showEvenCount();
+            showVisitedColors();
         }
     }
     lastX = x; lastY = y;
 }
 
+function areIndexEqual(a, b) {
+    var len = a.length;
+    var i;
+    for (i = 0; i < len; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function checkIfNotDiagonal(i, j) {
+    if (!indexOfVisitedSquares.length) {
+        return true;
+    }
+
+    var lastIndex = indexOfVisitedSquares.length - 1;
+    console.log("lastIndex = " + lastIndex);
+    var previousIndex = indexOfVisitedSquares[lastIndex];
+    console.log(previousIndex);
+
+    // if (previousIndex == undefined) {
+    //     return false;
+    // }
+
+    // check top
+    // [-][]
+    if (areIndexEqual(previousIndex, [i - 1, j])) {
+        return true;
+    }
+
+    // check right
+    // [][+]
+    if (areIndexEqual(previousIndex, [i, j + 1])) {
+        return true;
+    }
+
+    // check left
+    // []][-]
+    if (areIndexEqual(previousIndex, [i, j - 1])) {
+        return true;
+    }
+
+    // check down
+    // [+][]
+    if (areIndexEqual(previousIndex, [i + 1, j])) {
+        return true;
+    }
+
+    return false;
+}
+
+function updateIndexOfVisitedSquares(i, j) {
+    indexOfVisitedSquares.push([i, j]);
+}
+
+function updateVisitedColors(i, j) {
+    if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
+        visitedColors += "<span style='color: rgb(12, 131, 22)'>G</span>";
+    } else if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
+        visitedColors += "<span style='color: #a2a2a2'>W</span>"; //style='color: rgb(248, 248, 241)'
+    }
+}
+
 function countUnvisitedOddSquares() {
     var rowSize = unvisited[0].length;
     var i, j;
+    var count = 0;
     for (i = 0; i < unvisited.length; i++) {
         for (j = 0; j < rowSize; j++) {
             if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) {
-                if (unvisitedOddCount > 0) {
-                    unvisitedOddCount -= unvisited[i][j];
+                if (unvisited[i][j] > 0) {
+                    count++;
                 }
             }
         }
     }
+    unvisitedOddCount = 13 - count;
     // console.log(unvisited);
 }
 
 function countUnvisitedEvenSquares() {
     var rowSize = unvisited[0].length;
     var i, j;
+    var count = 0;
     for (i = 0; i < unvisited.length; i++) {
         for (j = 0; j < rowSize; j++) {
             if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0)) {
-                if (unvisitedEvenCount > 0) {
-                    unvisitedEvenCount -= unvisited[i][j];
+                if (unvisited[i][j] > 0) {
+                    count++;
                 }
             }
         }
     }
+    unvisitedEvenCount = 12 - count;
     // console.log(unvisited);
+}
+
+function showVisitedColors() {
+    document.getElementById("visited-colors").innerHTML = visitedColors;
+    // console.log(unvisitedOddCount);
 }
 
 function showOddCount() {
@@ -168,6 +277,24 @@ function clearColoredSquares() {
             getDivFromIndex(i, j).style.backgroundColor = "rgb(248, 248, 241)";
         }
     }
+}
+
+function resetVisualization() {
+    this.unvisited = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ];
+    this.unvisitedOddCount = 13;
+    this.unvisitedEvenCount = 12;
+    this.visitedColors = "";
+    this.indexOfVisitedSquares = [];
+
+    showOddCount();
+    showEvenCount();
+    showVisitedColors();
 }
 
 function changeColor(item) {
@@ -198,9 +325,37 @@ function toggleFillColor() {
 function toggleVisualize() {
     if (!hasVisualizeToggled) {
         hasVisualizeToggled = true;
+        showVisualizeLabels();
+        showVisualizeContents();
     } else {
         hasVisualizeToggled = false;
+        hideVisualizeLabels();
+        hideVisualizeContents();
     }
+}
+
+function showVisualizeLabels() {
+    document.getElementById("odd-counter-label").innerHTML = "Odd Count: ";
+    document.getElementById("even-counter-label").innerHTML = "Even Count: ";
+    document.getElementById("visited-colors-label").innerHTML = "Visited Colors: ";
+}
+
+function showVisualizeContents() {
+    showOddCount();
+    showEvenCount();
+    showVisitedColors();
+}
+
+function hideVisualizeLabels() {
+    document.getElementById("odd-counter-label").innerHTML = "";
+    document.getElementById("even-counter-label").innerHTML = "";
+    document.getElementById("visited-colors-label").innerHTML = "";
+}
+
+function hideVisualizeContents() {
+    document.getElementById("odd-counter").innerHTML = "";
+    document.getElementById("even-counter").innerHTML = "";
+    document.getElementById("visited-colors").innerHTML = "";
 }
 
 function getDivIdFromIndex(i, j) {
