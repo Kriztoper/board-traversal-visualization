@@ -16,7 +16,7 @@
 
 <body onload="initApp();">
     <div id="app">
-        <button onclick="clearDrawing()">Clear Scribbles</button>
+        <button onclick="clearDrawing()">Clear Scribble</button>
         <button id="flip-top-down-btn" onclick="flipTopDown()">Flip Top Down</button>
         <button id="flip-left-right-btn" onclick="flipLeftRight()">Flip Left Right</button>
         <button id="rotate-left-btn"  onclick="rotateCanvasToLeft()">Rotate Left</button>
@@ -26,6 +26,10 @@
         <label id="fill-color-toggle" class="color-fill-switch">
             <input type="checkbox" onclick="toggleFillColor()">
             <span class="slider round">Fill w/ Green</span>
+        </label>
+        <label id="square-numbers-toggle" class="color-fill-switch">
+            <input type="checkbox" onclick="toggleSquareNumbers()">
+            <span class="slider round">Square Numbers</span>
         </label>
         <label id="visualize-toggle" class="visualize-switch">
             <input type="checkbox" onclick="toggleVisualize()">

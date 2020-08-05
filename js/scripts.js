@@ -4,6 +4,7 @@ var ctx;
 var canvas;
 var rect;
 var hasFillColorToggled = false;
+var hasSquareNumbersToggled = false;
 var hasVisualizeToggled = false;
 var matrix = [
     [0, 0, 0, 0, 0],
@@ -282,6 +283,34 @@ function toggleFillColor() {
         var board = document.getElementById('board');
         board.style.zIndex = 1;
         canvas.style.zIndex = 2;
+    }
+}
+
+function showSquareNumbers() {
+    var i, j, num = 1;
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            getDivFromIndex(i, j).innerHTML = "<h1 style='color: #a2a2a2'>" + num++ + "</h1>";
+        }
+    }
+}
+
+function hideSquareNumbers() {
+    var i, j;
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            getDivFromIndex(i, j).innerHTML = "<h1></h1>";
+        }
+    }
+}
+
+function toggleSquareNumbers() {
+    if (!hasSquareNumbersToggled) {
+        hasSquareNumbersToggled = true;
+        showSquareNumbers();
+    } else {
+        hasSquareNumbersToggled = false;
+        hideSquareNumbers();
     }
 }
 
