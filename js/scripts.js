@@ -25,7 +25,25 @@ var unvisitedEvenCount = 12;
 var visitedColors = "";
 var indexOfVisitedSquares = [];
 
+function initBoard() {
+    var board = document.getElementById('board');
+    var i, j;
+    for (i = 0; i < 5; i++) {
+        var newRow = document.createElement('div');
+        newRow.setAttribute("id", "row" + i);
+        board.appendChild(newRow);
+        for (j = 0; j < 5; j++) {
+            var newSquare = document.createElement('div');
+            newSquare.setAttribute("id", "square" + i + "-" + j);
+            newSquare.setAttribute("onclick", "changeColor(this)");
+            newRow.appendChild(newSquare);
+        }
+    }
+}
+
 function initApp() {
+    initBoard();
+
     ctx = document.getElementById('demo-canvas').getContext("2d");
     canvas = document.querySelector("#demo-canvas");
 
