@@ -2,7 +2,6 @@ var mousePressed = false;
 var lastX, lastY;
 var ctx;
 var canvas;
-var rect;
 var hasFillColorToggled = false;
 var hasSquareNumbersToggled = false;
 var hasVisualizeToggled = false;
