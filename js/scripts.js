@@ -49,13 +49,13 @@ function initApp() {
     canvas.addEventListener("mousedown", (e) => {
         if (!hasFillColorToggled) {
             mousePressed = true;
-            Draw(e.pageX - getOffset(canvas).left, e.pageY - getOffset(canvas).top, false);
+            draw(e.pageX - getOffset(canvas).left, e.pageY - getOffset(canvas).top, false);
         }
     });
 
     canvas.addEventListener("mousemove", (e) => {
         if (mousePressed) {
-            Draw(e.pageX - getOffset(canvas).left, e.pageY - getOffset(canvas).top, true);
+            draw(e.pageX - getOffset(canvas).left, e.pageY - getOffset(canvas).top, true);
         }
     });
 
@@ -95,7 +95,7 @@ function getElementFromCoordinates(x, y) {
     return currentElement;
 }
 
-function Draw(x, y, isDown) {
+function draw(x, y, isDown) {
     if (isDown) {
         ctx.beginPath();
         ctx.strokeStyle = "red";
